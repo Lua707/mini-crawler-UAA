@@ -71,7 +71,7 @@ def respect_robots(url, user_agent=USER_AGENT):
 os.makedirs("data", exist_ok=True)
 
 # Abrir (o crear) el archivo CSV para escribir los logs
-with open("data/log.csv", "w", newline="", encoding="utf-8") as f:
+with open("data/log_mejora.csv", "w", newline="", encoding="utf-8") as f:
     writer = csv.writer(f)
     writer.writerow(["#", "url", "status", "elapsed_s", "n_links"])  # Escribir los encabezados
 
@@ -99,9 +99,13 @@ with open("data/log.csv", "w", newline="", encoding="utf-8") as f:
             status_code = response.status_code
             elapsed_time = round(response.elapsed.total_seconds(), 2)
 
-            # 2. Parsear el HTML para encontrar links
+            # 2. Parsear el HTML para encontrar links (VERSIÓN MEJORADA)
             soup = BeautifulSoup(response.text, "html.parser")
             links_found = []
+
+            # Lista de extensiones de archivo que queremos IGNORAR
+            extensiones_no_deseadas = ('.pdf', '.jpg', '.jpeg', '.png', '.gif', '.doc', '.docx', '.zip', '.ppt', '.pptx')
+
             for link_tag in soup.find_all('a', href=True):
                 raw_url = link_tag['href']
                 # Construir URL absoluta
@@ -117,6 +121,10 @@ with open("data/log.csv", "w", newline="", encoding="utf-8") as f:
                 # 3. No sea ancla (ej: "uaa.edu.py/#noticias")
                 if '#' in full_url:
                     full_url = full_url.split('#')[0]  # Quitar todo después del #
+
+                # 4. MEJORA: Filtrar por extensiones no deseadas 
+                if full_url.lower().endswith(extensiones_no_deseadas):
+                    continue # Si es un archivo, saltar y no agregar
 
                 # Si pasa: agrega la URL a la lista
                 if full_url not in links_found:  # Evita duplicados en la misma página
@@ -147,4 +155,4 @@ with open("data/log.csv", "w", newline="", encoding="utf-8") as f:
         # Esperar un tiempo para no saturar el servidor (cumple el delay de 1s)
         time.sleep(DELAY)
 
-print("\n✅ ¡Crawleo completado! Revisa data/log.csv para los resultados.")
+print("\n✅ ¡Crawleo completado! Revisa data/log_mejora.csv para los resultados.")
