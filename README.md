@@ -14,11 +14,13 @@ El prototipo:
 Instala las dependencias con:
 ```bash
 pip install -r requirements.txt
+```
 
 ## Uso
 Ejecuta el crawler desde la raíz del proyecto con:
 ```bash
 python src/mini_crawler.py
+```
 
 ## Uso de Git (flujo básico)
 
@@ -27,18 +29,22 @@ Para mantener actualizado tu repositorio en GitHub:
 1.Añadir cambios al área de preparación: 
 ```bash
 git add .
+```
 
 2.Confirmar cambios con un mensaje descriptivo: 
 ```bash
 git commit -m "Descripción breve de lo que hiciste"
+```
 
 3.Subir los cambios a GitHub (rama principal): 
 ```bash
 git push origin main
+```
 
 4.Actualizar tu repositorio local con los cambios del remoto: 
 ```bash
 git pull origin main
+```
 
 ## Notas importantes
 
